@@ -31,12 +31,14 @@ module EmberCLI
     end
 
     def run
-      prepare
-      FileUtils.touch lockfile_path
-      cmd = command(watch: true)
-      @pid = exec(cmd, method: :spawn)
-      Process.detach pid
-      set_on_exit_callback
+      unless pid
+        prepare
+        FileUtils.touch lockfile_path
+        cmd = command(watch: true)
+        @pid = exec(cmd, method: :spawn)
+        Process.detach pid
+        set_on_exit_callback
+      end
     end
 
     def run_tests
